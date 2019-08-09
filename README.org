@@ -1,0 +1,22 @@
+
+* Introduction
+  PyTorch is a flexible deep learning framework, which enables you to make custom LSTM cells. However, custom LSTM cells cannot exploit the convenient options provided by [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][PyTorch's standard LSTM]], including:
+  - Bidirection
+  - Multi-layers
+  - Dropout
+  Therefore, it is tedious to implement all such options from scratch.
+
+  Here, I made a simple LSTM package which eases the cumbersome.
+
+* Requirement
+  It needs PyTorch-1.1 or more recent version.
+
+* Document
+  Important classes are described as follows:
+  - /LSTMFrame/: Its /forward/ provides the same API with that of [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][LSTM]] when given a list of LSTM cells to its /__init__/. The list depicts the LSTM's layout. For example, it needs /[(cell_0f, cell_0b), (cell_1f, cell_1b)]/ to get a bidirectional and two-layer LSTM.  Also, you can set the options of Dropout and Bidirection.
+    *Caution*: It can process variable-length batch inputs, but the computation time is proportional to the maximum length of input sequences for each batch.
+  - /LayerNormLSTMCell/: An example of custom LSTM cell where [[https://arxiv.org/pdf/1607.06450.pdf][layer normalization]] and [[https://arxiv.org/pdf/1603.05118.pdf][recurrent dropout]]  are applied.
+  - /LayerNormLSTM/: An application of /LSTMFrame/ with /LayerNormLSTMCell/. The class provides the same API of [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][LSTM]] with additional options, /r_dropout/ and /layer_norm_enabled/.
+
+* Note
+  The /LSTMFrame/ and /LayerNormLSTM/ are not exhaustively tested for various options. So, I recommend to use [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][standard LSTM]] first then replace it with this package.
