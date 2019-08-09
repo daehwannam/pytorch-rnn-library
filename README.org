@@ -19,4 +19,4 @@
    - /LayerNormLSTM/: An application of /LSTMFrame/ with /LayerNormLSTMCell/. The class provides the same API of [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][LSTM]] with additional options, /r_dropout/ and /layer_norm_enabled/.
 
 ** Note
-   The /LSTMFrame/ and /LayerNormLSTM/ are not exhaustively tested for various options. So, I recommend to use [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][standard LSTM]] first then replace it with this package.
+   The /LSTMFrame/ is not exhaustively tested for various options. So, I recommend to use [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][standard LSTM]] first then replace it with this package later.
