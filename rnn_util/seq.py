@@ -237,6 +237,7 @@ class LayerNormLSTMCell(nn.Module):
             input_size + hidden_size, hidden_size * 4, bias=not layer_norm_enabled)
 
         if dropout is not None:
+            # recurrent dropout is applied
             if isinstance(dropout, nn.Dropout):
                 self.dropout = dropout
             elif dropout > 0:
@@ -299,10 +300,11 @@ class LayerNormLSTM(LSTMFrame):
         rnn_cells = tuple(
             tuple(
                 LayerNormLSTMCell(
-                    input_size, hidden_size,
+                    input_size if layer_idx == 0 else hidden_size * (2 if bidirectional else 1),
+                    hidden_size,
                     dropout=r_dropout_layer,
                     layer_norm_enabled=layer_norm_enabled)
                 for _ in range(2 if bidirectional else 1))
-            for _ in range(num_layers))
+            for layer_idx in range(num_layers))
 
         super().__init__(rnn_cells, dropout, bidirectional)
