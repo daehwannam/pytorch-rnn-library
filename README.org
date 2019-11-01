@@ -13,10 +13,10 @@
 
 ** Document
    Important classes are described as follows:
-   - /LSTMFrame/: It is a general framework to customize LSTMs. Its /forward/ provides the same API with that of [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][LSTM]] when given a list of LSTM cells to its /__init__/. The list depicts the LSTM's layout. For example, it needs [(/cell_0f, cell_0b/), (/cell_1f, cell_1b/)] to get a bidirectional and two-layer LSTM.  Also, you can set the options of Dropout and Bidirection.
+   - /LSTMFrame/: It is a general framework to customize LSTMs. Its /forward/ provides the same API with that of [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][LSTM]] when given a list of LSTM cells to its /__init__/. The list depicts the LSTM's layout. For example, it needs [(/cell_0f, cell_0b/), (/cell_1f, cell_1b/)] to get a bidirectional and two-layer LSTM.  Also, you can set the options of _dropout_ and _bidirection_.
      *Caution*: It process variable-length batch inputs (just by converting [[https://pytorch.org/docs/stable/nn.html#torch.nn.utils.rnn.PackedSequence][PackedSequence]] object to a tensor and lengths), but the computation time is proportional to the maximum length of input sequences for each batch.
    - /LayerNormLSTMCell/: An example of custom LSTM cell where [[https://arxiv.org/pdf/1607.06450.pdf][layer normalization]] and [[https://arxiv.org/pdf/1603.05118.pdf][recurrent dropout]] are applied. The implementation is based on [[https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/LayerNormBasicLSTMCell][tf.contrib.rnn.LayerNormBasicLSTMCell]].
-   - /LayerNormLSTM/: An application of /LSTMFrame/ with /LayerNormLSTMCell/. The class provides the options of [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][LSTM]] and additional options, /r_dropout/ for [[https://arxiv.org/pdf/1603.05118.pdf][recurrent dropout]] and /layer_norm_enabled/ for [[https://arxiv.org/pdf/1607.06450.pdf][layer normalization]].
+   - /LayerNormLSTM/: An application of /LSTMFrame/ with /LayerNormLSTMCell/. The class provides all the options of [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][LSTM]] and additional options, /r_dropout/ for [[https://arxiv.org/pdf/1603.05118.pdf][recurrent dropout]] and /layer_norm_enabled/ for [[https://arxiv.org/pdf/1607.06450.pdf][layer normalization]].
 
 ** Note
    The /LSTMFrame/ is not exhaustively tested for various options. So, I recommend to use [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][standard LSTM]] first then replace it with this package later.
