@@ -153,6 +153,8 @@ class LSTMFrame(nn.Module):
         last_cell_tensor = torch.stack(last_cell_list, dim=0)
 
         if not uniform_length:
+            # the below one line code cleans out trash values beyond the range of lengths.
+            # actually, the code is for debugging, so it can be removed to enhance computing speed slightly.
             output = (
                 output.transpose(0, 1) * enable_cuda(self, indicator)).transpose(0, 1)
 
