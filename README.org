@@ -13,7 +13,7 @@
 
 ** Document
    Important classes are described as follows:
-   - /LSTMFrame/: Its /forward/ provides the same API with that of [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][LSTM]] when given a list of LSTM cells to its /__init__/. The list depicts the LSTM's layout. For example, it needs [(/cell_0f, cell_0b/), (/cell_1f, cell_1b/)] to get a bidirectional and two-layer LSTM.  Also, you can set the options of Dropout and Bidirection.
+   - /LSTMFrame/: It is a general framework to customize LSTMs. Its /forward/ provides the same API with that of [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][LSTM]] when given a list of LSTM cells to its /__init__/. The list depicts the LSTM's layout. For example, it needs [(/cell_0f, cell_0b/), (/cell_1f, cell_1b/)] to get a bidirectional and two-layer LSTM.  Also, you can set the options of Dropout and Bidirection.
      *Caution*: It can process variable-length batch inputs with /pack_padded_sequence/ and /pad_packed_sequence/, but the computation time is proportional to the maximum length of input sequences for each batch.
    - /LayerNormLSTMCell/: An example of custom LSTM cell where [[https://arxiv.org/pdf/1607.06450.pdf][layer normalization]] and [[https://arxiv.org/pdf/1603.05118.pdf][recurrent dropout]]  are applied.
    - /LayerNormLSTM/: An application of /LSTMFrame/ with /LayerNormLSTMCell/. The class provides the options of [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][LSTM]] and additional options, /r_dropout/ and /layer_norm_enabled/.
