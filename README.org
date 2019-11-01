@@ -6,7 +6,7 @@
    - Dropout
    Therefore, it is tedious to implement all such options from scratch.
 
-   Here, I made a simple LSTM package which eases the cumbersome by /LSTMFrame/. Also, the package provide /LayerNormLSTM/, a LSTM variant including [[https://arxiv.org/pdf/1607.06450.pdf][layer normalization]] and [[https://arxiv.org/pdf/1603.05118.pdf][recurrent dropout]] as options.
+   Here, I made a simple LSTM package which eases the cumbersome by /LSTMFrame/. Also, the package provides /LayerNormLSTM/, a LSTM variant including [[https://arxiv.org/pdf/1607.06450.pdf][layer normalization]] and [[https://arxiv.org/pdf/1603.05118.pdf][recurrent dropout]] as options.
 
 ** Requirement
    It needs PyTorch-1.1 or more recent version.
