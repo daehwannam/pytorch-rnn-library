@@ -57,10 +57,10 @@ class LSTMFrame(nn.Module):
                         for example_seq, length in zip(example_seqs, lengths)]
         return torch.cat(shifted_seqs, dim=1)
 
-    def forward(self, input, init_state):
+    def forward(self, input, init_state=None):
         """
         :param input: a tensor(s) of shape (seq_len, batch, input_size)
-        :param init_state: (num_layers * num_directions, batch, hidden_size)
+        :param init_state: (h_0, c_0) where the size of both is (num_layers * num_directions, batch, hidden_size)
         :returns:
         - output: (seq_len, batch, num_directions * hidden_size)
         - h_n: (num_layers * num_directions, batch, hidden_size)
@@ -83,6 +83,15 @@ class LSTMFrame(nn.Module):
         if not uniform_length:
             indicator = get_indicator(lengths)
             # valid_example_nums = indicator.sum(0)
+
+        if init_state is None:
+            # init_state with heterogenous hidden_size
+            init_hidden = init_cell = [
+                enable_cuda(self, torch.zeros(
+                    input.size()[1], self.rnn_cells[layer_idx][direction].hidden_size))
+                for layer_idx in range(self.num_layers)
+                for direction in range(self.num_directions)]
+            init_state = init_hidden, init_cell
 
         init_hidden, init_cell = init_state
 
@@ -134,7 +143,7 @@ class LSTMFrame(nn.Module):
                     direction_last_hidden, direction_last_cell = step_state_list[-1]
                 else:
                     direction_last_hidden, direction_last_cell = map(
-                        lambda x: torch.stack([x[length][example_id]
+                        lambda x: torch.stack([x[length - 1][example_id]
                                                for example_id, length in enumerate(lengths)], dim=0),
                         zip(*step_state_list))
 
@@ -156,7 +165,7 @@ class LSTMFrame(nn.Module):
             # the below one line code cleans out trash values beyond the range of lengths.
             # actually, the code is for debugging, so it can be removed to enhance computing speed slightly.
             output = (
-                output.transpose(0, 1) * enable_cuda(self, indicator)).transpose(0, 1)
+                output.transpose(0, 1) * enable_cuda(self, indicator).float()).transpose(0, 1)
 
         if input_packed:
             output = pack_padded_sequence(output, lengths)
