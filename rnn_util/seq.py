@@ -21,7 +21,7 @@ from .common import no_dropout, no_layer_norm, get_indicator, enable_cuda
 
 
 class LSTMFrame(nn.Module):
-    def __init__(self, rnn_cells, dropout=0, bidirectional=False):
+    def __init__(self, rnn_cells, dropout=0, batch_first=False, bidirectional=False):
         """
         :param rnn_cells: ex) [(cell_0_f, cell_0_b), (cell_1_f, cell_1_b), ..]
         :param dropout:
@@ -168,6 +168,7 @@ class LSTMFrame(nn.Module):
                 output.transpose(0, 1) * enable_cuda(self, indicator).float()).transpose(0, 1)
 
         if input_packed:
+            # always batch_first=False --> trick to process input regardless of batch_first option
             output = pack_padded_sequence(output, lengths)
 
         return output, (last_hidden_tensor, last_cell_tensor)
@@ -320,7 +321,7 @@ class LayerNormLSTMCell(nn.Module):
 
 
 class LayerNormLSTM(LSTMFrame):
-    def __init__(self, input_size, hidden_size, num_layers=1, dropout=0, r_dropout=0, bidirectional=False, layer_norm_enabled=True):
+    def __init__(self, input_size, hidden_size, num_layers=1, batch_first=False, dropout=0, r_dropout=0, bidirectional=False, layer_norm_enabled=True):
         r_dropout_layer = nn.Dropout(r_dropout)
         rnn_cells = tuple(
             tuple(
@@ -332,4 +333,5 @@ class LayerNormLSTM(LSTMFrame):
                 for _ in range(2 if bidirectional else 1))
             for layer_idx in range(num_layers))
 
-        super().__init__(rnn_cells, dropout, bidirectional)
+        super().__init__(rnn_cells=rnn_cells, dropout=dropout,
+                         batch_first=batch_first, bidirectional=bidirectional)
