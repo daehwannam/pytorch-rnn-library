@@ -133,7 +133,7 @@ class LSTMFrame(nn.Module):
                     # hidden & cell's size = (batch, hidden_size)
                     direction_last_hidden, direction_last_cell = step_state_list[-1]
                 else:
-                    step_last_hidden, step_last_cell = map(
+                    direction_last_hidden, direction_last_cell = map(
                         lambda x: torch.stack([x[length][example_id]
                                                for example_id, length in enumerate(lengths)], dim=0),
                         zip(*step_state_list))
