@@ -61,7 +61,7 @@ class LSTMFrame(nn.Module):
         """
         :param input: a tensor(s) of shape (seq_len, batch, input_size)
         :param init_state: (h_0, c_0) where the size of both is (num_layers * num_directions, batch, hidden_size)
-        :returns:
+        :returns: (output, (h_n, c_n))
         - output: (seq_len, batch, num_directions * hidden_size)
         - h_n: (num_layers * num_directions, batch, hidden_size)
         - c_n: (num_layers * num_directions, batch, hidden_size)
