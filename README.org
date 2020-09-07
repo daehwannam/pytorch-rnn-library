@@ -17,6 +17,8 @@
      *Caution*: It can process a batch with variable-length sequences (just by converting [[https://pytorch.org/docs/stable/nn.html#torch.nn.utils.rnn.PackedSequence][PackedSequence]] object to a tensor and lengths), but the computation time is proportional to the maximum length of input sequences for each batch.
    - /LayerNormLSTMCell/: An example of custom LSTM cell where [[https://arxiv.org/pdf/1607.06450.pdf][layer normalization]] and [[https://arxiv.org/pdf/1603.05118.pdf][recurrent dropout]] are applied. The implementation is based on [[https://www.tensorflow.org/api_docs/python/tf/contrib/rnn/LayerNormBasicLSTMCell][tf.contrib.rnn.LayerNormBasicLSTMCell]].
    - /LayerNormLSTM/: An application of /LSTMFrame/ with /LayerNormLSTMCell/. The class provides the key options of [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][LSTM]] and additional options, /r_dropout/ for [[https://arxiv.org/pdf/1603.05118.pdf][recurrent dropout]] and /layer_norm_enabled/ for [[https://arxiv.org/pdf/1607.06450.pdf][layer normalization]].
+     
+   Also, you can check [[https://github.com/daehwannam/pytorch-rnn-util/blob/master/example.py][example.py]] to understand the usage of /LSTMFrame/ and /LayerNormLSTM/.
 
 ** Note
-   The /LSTMFrame/ is not exhaustively tested for various options. So, I recommend to use [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][standard LSTM]] first then replace it with this package later.
+   /LSTMFrame/ is not exhaustively tested for various options. So, I recommend to use [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][standard LSTM]] first then replace it with this package later.
