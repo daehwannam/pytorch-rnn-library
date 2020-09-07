@@ -11,7 +11,7 @@
 ** Requirement
    It needs PyTorch-1.1 or more recent version.
 
-** Document
+** Documentation
    Important classes are described as follows:
    - ~LSTMFrame~: It is a general framework to customize LSTMs. Its ~forward~ provides the same API with that of [[https://pytorch.org/docs/1.1.0/nn.html#torch.nn.LSTM][LSTM]] when given a list of LSTM cells to its ~__init__~. The list depicts the LSTM's layout. For example, it needs ~[(cell_0f, cell_0b), (cell_1f, cell_1b)]~ to get a bidirectional and two-layer LSTM.  Also, you can set the options of _dropout_ and _bidirection_.
      *Caution*: It can process a batch with variable-length sequences (just by converting [[https://pytorch.org/docs/stable/nn.html#torch.nn.utils.rnn.PackedSequence][PackedSequence]] object to a tensor and lengths), but the computation time is proportional to the maximum length of input sequences for each batch.
