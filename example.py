@@ -23,8 +23,13 @@ rnn_cells = [
     [LSTMCell(hidden_size * num_directions, hidden_size),
      LSTMCell(hidden_size * num_directions, hidden_size)]  # 2nd bidirectional LSTM layer
 ]
-# 'rnn_cells' is a list of forward/backward rnn cell pairs.
+# 'rnn_cells' is a list of forward/backward LSTM cell pairs.
 # Each pair corresponds to a layer of bidirectional LSTM.
+# You can replace 'LSTMCell' with your custom LSTM cell class.
+# Also you can compose 'rnn_cells' with heterogeneous LSTM cells.
+#
+# Caution: RNN cells who don't distinguish hidden states and cell states,
+#          such as 'RNNCell' or 'GRUCell', are not allowed.
 
 assert len(rnn_cells) == num_layers
 assert all(len(rnn_layer_cells) == num_directions for rnn_layer_cells in rnn_cells)
