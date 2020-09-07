@@ -29,7 +29,7 @@ rnn_cells = [
 # Also you can compose 'rnn_cells' with heterogeneous LSTM cells.
 #
 # Caution: RNN cells who don't distinguish hidden states and cell states,
-#          such as 'RNNCell' or 'GRUCell', are not allowed.
+#          such as 'RNNCell' or 'GRUCell', are not allowed to be included in 'rnn_cells'
 
 assert len(rnn_cells) == num_layers
 assert all(len(rnn_layer_cells) == num_directions for rnn_layer_cells in rnn_cells)
