@@ -28,7 +28,7 @@ rnn_cells = [
 # You can replace 'LSTMCell' with your custom LSTM cell class.
 # Also you can compose 'rnn_cells' with heterogeneous LSTM cells.
 #
-# Caution: RNN cells who don't distinguish hidden states and cell states,
+# Caution: Non-LSTM cells, which don't distinguish hidden states and cell states,
 #          such as 'RNNCell' or 'GRUCell', are not allowed to be included in 'rnn_cells'
 
 assert len(rnn_cells) == num_layers
