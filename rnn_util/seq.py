@@ -324,6 +324,15 @@ class LayerNormLSTMCell(nn.Module):
 
 class LayerNormLSTM(LSTMFrame):
     def __init__(self, input_size, hidden_size, num_layers=1, batch_first=False, dropout=0, r_dropout=0, bidirectional=False, layer_norm_enabled=True):
+
+        self.input_size = input_size
+        self.hidden_size = hidden_size
+        self.batch_first = batch_first
+        self.dropout = dropout
+        self.r_dropout = r_dropout
+        self.bidirectional = bidirectional
+        self.layer_norm_enabled = layer_norm_enabled
+
         r_dropout_layer = nn.Dropout(r_dropout)
         rnn_cells = tuple(
             tuple(
