@@ -17,7 +17,7 @@ import torch.nn as nn
 import torch
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
-from .common import no_dropout, no_layer_norm, get_indicator, enable_cuda
+from .common import no_dropout, no_layer_norm, get_indicator, get_module_device
 
 
 class LSTMFrame(nn.Module):
@@ -81,14 +81,16 @@ class LSTMFrame(nn.Module):
             uniform_length = True
 
         if not uniform_length:
-            indicator = get_indicator(lengths)
+            indicator = get_indicator(torch.tensor(lengths, device=get_module_device(self)))
             # valid_example_nums = indicator.sum(0)
 
         if init_state is None:
             # init_state with heterogenous hidden_size
             init_hidden = init_cell = [
-                enable_cuda(self, torch.zeros(
-                    input.size()[1], self.rnn_cells[layer_idx][direction].hidden_size))
+                torch.zeros(
+                    input.size()[1],
+                    self.rnn_cells[layer_idx][direction].hidden_size,
+                    device=get_module_device(self))
                 for layer_idx in range(self.num_layers)
                 for direction in range(self.num_directions)]
             init_state = init_hidden, init_cell
@@ -112,8 +114,9 @@ class LSTMFrame(nn.Module):
                 state_idx = layer_idx * self.num_directions + direction
                 step_state = (init_hidden[state_idx], init_cell[state_idx])
 
-                direction_output = enable_cuda(self, torch.zeros(
-                    layer_input.size()[:2] + (cell.hidden_size,)))  # (seq_len, batch_size, hidden_size)
+                direction_output = torch.zeros(
+                    layer_input.size()[:2] + (cell.hidden_size,),
+                    device=get_module_device(self))  # (seq_len, batch_size, hidden_size)
                 step_state_list = []
 
                 if direction == 0:
@@ -165,7 +168,7 @@ class LSTMFrame(nn.Module):
             # the below one line code cleans out trash values beyond the range of lengths.
             # actually, the code is for debugging, so it can be removed to enhance computing speed slightly.
             output = (
-                output.transpose(0, 1) * enable_cuda(self, indicator).float()).transpose(0, 1)
+                output.transpose(0, 1) * indicator).transpose(0, 1)
 
         if input_packed:
             # always batch_first=False --> trick to process input regardless of batch_first option

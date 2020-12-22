@@ -26,15 +26,13 @@ no_dropout.p = 0
 def no_layer_norm(x): return x
 
 
-def get_indicator(lengths, max_length=None):
-    if not isinstance(lengths, torch.Tensor):
-        lengths = torch.Tensor(lengths)
-    lengths_size = lengths.size()
+def get_indicator(length_tensor, max_length=None):
+    lengths_size = length_tensor.size()
 
-    flat_lengths = lengths.view(-1, 1)
+    flat_lengths = length_tensor.view(-1, 1)
 
     if not max_length:
-        max_length = lengths.max()
+        max_length = length_tensor.max()
     unit_range = torch.arange(max_length)
     # flat_range = torch.stack([unit_range] * flat_lengths.size()[0],
     #                          dim=0)
@@ -90,13 +88,17 @@ def repeat_lstm_state(state, batch_size):
         for s in state)
 
 
-def enable_cuda(model, arg):
-    if is_cuda_enabled(model):
-        arg = arg.cuda()
-    else:
-        arg = arg.cpu()
-    return arg
+# def enable_cuda(model, arg):
+#     if is_cuda_enabled(model):
+#         arg = arg.cuda()
+#     else:
+#         arg = arg.cpu()
+#     return arg
 
 
 def is_cuda_enabled(model):
     return next(model.parameters()).is_cuda
+
+
+def get_module_device(model):
+    return next(model.parameters()).device

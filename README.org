@@ -9,7 +9,7 @@
    Here, I made a simple LSTM package which eases the cumbersome by ~LSTMFrame~. Also, the package provides ~LayerNormLSTM~, a LSTM variant including [[https://arxiv.org/pdf/1607.06450.pdf][layer normalization]] and [[https://arxiv.org/pdf/1603.05118.pdf][recurrent dropout]] as options.
 
 ** Requirement
-   It needs PyTorch-1.1 or more recent version.
+   It needs PyTorch-1.7 or more recent version.
 
 ** Documentation
    Important classes are described as follows:
