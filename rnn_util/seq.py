@@ -273,6 +273,7 @@ class LayerNormLSTMCell(nn.Module):
                 self.dropout = nn.Dropout(dropout)
             else:
                 assert dropout >= 0
+                self.dropout = no_dropout
         else:
             self.dropout = no_dropout
 
