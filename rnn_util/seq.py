@@ -21,7 +21,7 @@ from .common import no_dropout, no_layer_norm, get_indicator, get_module_device
 
 
 class LSTMFrame(nn.Module):
-    def __init__(self, rnn_cells, dropout=0, batch_first=False, bidirectional=False):
+    def __init__(self, rnn_cells, batch_first=False, dropout=0, bidirectional=False):
         """
         :param rnn_cells: ex) [(cell_0_f, cell_0_b), (cell_1_f, cell_1_b), ..]
         :param dropout:
@@ -71,6 +71,7 @@ class LSTMFrame(nn.Module):
 
         if isinstance(input, torch.nn.utils.rnn.PackedSequence):
             input_packed = True
+            # always batch_first=False --> trick to process input regardless of batch_first option
             input, lengths = pad_packed_sequence(input, batch_first=False)
             if max(lengths) == min(lengths):
                 uniform_length = True
@@ -175,7 +176,6 @@ class LSTMFrame(nn.Module):
                 output.transpose(0, 1) * indicator).transpose(0, 1)
 
         if input_packed:
-            # always batch_first=False --> trick to process input regardless of batch_first option
             output = pack_padded_sequence(output, lengths, batch_first=self.batch_first)
         elif self.batch_first:
             output = output.transpose(0, 1)
