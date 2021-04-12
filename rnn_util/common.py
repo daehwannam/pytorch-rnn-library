@@ -36,7 +36,8 @@ def get_indicator(length_tensor, max_length=None):
     unit_range = torch.arange(max_length)
     # flat_range = torch.stack([unit_range] * flat_lengths.size()[0],
     #                          dim=0)
-    flat_range = unit_range.repeat(flat_lengths.size()[0], 1)
+    # flat_range = unit_range.repeat(flat_lengths.size()[0], 1)
+    flat_range = unit_range.expand(flat_lengths.size()[0:1] + unit_range.size())
     flat_indicator = flat_range < flat_lengths
 
     return flat_indicator.view(lengths_size + (-1, 1))
@@ -58,9 +59,13 @@ def create_lstm_cell_init_state(hidden_size, init_state_learned=True):
 
 
 def repeat_lstm_cell_state(state, batch_size):
+    for s in state:
+        size = s.size()
+        assert len(size) == 2
     # s is either hidden or cell
     return tuple(
-        s.repeat(batch_size, 1)
+        # s.repeat(batch_size, 1)
+        s.squeeze(0).expand((batch_size,) + s.size()[1:])
         for s in state)
 
 

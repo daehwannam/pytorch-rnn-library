@@ -46,6 +46,8 @@ class LSTMFrame(nn.Module):
         else:
             self.dropout = no_dropout
 
+        self.batch_first = batch_first
+
     def align_sequence(self, seq, lengths, shift_right):
         """
         :param seq: (seq_len, batch_size, *)
@@ -69,7 +71,7 @@ class LSTMFrame(nn.Module):
 
         if isinstance(input, torch.nn.utils.rnn.PackedSequence):
             input_packed = True
-            input, lengths = pad_packed_sequence(input)
+            input, lengths = pad_packed_sequence(input, batch_first=False)
             if max(lengths) == min(lengths):
                 uniform_length = True
             else:
@@ -77,6 +79,8 @@ class LSTMFrame(nn.Module):
             assert max(lengths) == input.size()[0]
         else:
             input_packed = False
+            if self.batch_first:
+                input = input.transpose(0, 1)
             lengths = [input.size()[0]] * input.size()[1]
             uniform_length = True
 
@@ -172,7 +176,9 @@ class LSTMFrame(nn.Module):
 
         if input_packed:
             # always batch_first=False --> trick to process input regardless of batch_first option
-            output = pack_padded_sequence(output, lengths)
+            output = pack_padded_sequence(output, lengths, batch_first=self.batch_first)
+        elif self.batch_first:
+            output = output.transpose(0, 1)
 
         return output, (last_hidden_tensor, last_cell_tensor)
 
