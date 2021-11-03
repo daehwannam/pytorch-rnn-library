@@ -77,6 +77,8 @@ class LSTMFrame(nn.Module):
                 uniform_length = True
             else:
                 uniform_length = False
+            if isinstance(lengths, torch.Tensor):
+                lengths = tuple(lengths.detach().cpu().numpy())
             assert max(lengths) == input.size()[0]
         else:
             input_packed = False
