@@ -17,16 +17,20 @@ import torch.nn as nn
 import torch
 
 
-def no_dropout(x): return x
-
-
+# def no_dropout(x): return x
+no_dropout = nn.Identity()
 no_dropout.p = 0
 
-
-def no_layer_norm(x): return x
+# def no_layer_norm(x): return x
+no_layer_norm = nn.Identity()
 
 
 def get_indicator(length_tensor, max_length=None):
+    """
+    :param length_tensor: 
+    :param max_length: 
+    :returns: a tensor where positions within ranges are set to 1
+    """
     lengths_size = length_tensor.size()
 
     flat_lengths = length_tensor.view(-1, 1)
