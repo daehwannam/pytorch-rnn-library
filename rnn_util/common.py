@@ -33,14 +33,14 @@ def get_indicator(length_tensor, max_length=None):
     return flat_indicator.view(lengths_size + (-1, 1))
 
 
-def create_lstm_cell_init_state(hidden_size, init_state_learned=True):
+def create_lstm_cell_init_state(hidden_size, init_state_learned=True, device=None):
     """
     :param hidden_size: 
     :param init_state_learned: 
     :returns: init_state is a input of lstm cells. _init_state is saved as a parameter of model (such as self._init_state)
     """
-    init_hidden = nn.Parameter(torch.zeros(1, hidden_size), init_state_learned)
-    init_cell = nn.Parameter(torch.zeros(1, hidden_size), init_state_learned)
+    init_hidden = nn.Parameter(torch.zeros(1, hidden_size, device=device), init_state_learned)
+    init_cell = nn.Parameter(torch.zeros(1, hidden_size, device=device), init_state_learned)
 
     init_state = (init_hidden, init_cell)
     _init_state = nn.ParameterList(init_state)
@@ -59,16 +59,16 @@ def repeat_lstm_cell_state(state, batch_size):
         for s in state)
 
 
-def create_lstm_init_state(num_layers, num_directions, hidden_size, init_state_learned=True):
+def create_lstm_init_state(num_layers, num_directions, hidden_size, init_state_learned=True, device=None):
     """
     :param hidden_size: 
     :param init_state_learned: 
     :returns: init_state is a input of lstm cells. _init_state is saved as a parameter of model (such as self._init_state)
     """
     init_hidden = nn.Parameter(torch.zeros(
-        num_layers * num_directions, 1, hidden_size), init_state_learned)
+        num_layers * num_directions, 1, hidden_size, device=device), init_state_learned)
     init_cell = nn.Parameter(torch.zeros(num_layers * num_directions,
-                                         1, hidden_size), init_state_learned)
+                                         1, hidden_size, device=device), init_state_learned)
 
     init_state = (init_hidden, init_cell)
     _init_state = nn.ParameterList(init_state)
