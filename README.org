@@ -31,5 +31,6 @@ Important classes are described as follows:
 Also, you can check [[https://github.com/daehwannam/pytorch-rnn-util/blob/master/example.py][example.py]] to understand the usage of ~RNNFrame~, ~LSTMFrame~ and ~LayerNormLSTM~.
 
 ** Note
-~RNNFrame~ is not exhaustively tested for various options.
-So, I recommend to use the standard [[https://pytorch.org/docs/1.8.0/generated/torch.nn.LSTM.html?highlight=lstm#torch.nn.LSTM][RNN]] or [[https://pytorch.org/docs/1.8.0/generated/torch.nn.LSTM.html?highlight=lstm#torch.nn.LSTM][LSTM]] first then replace it with this package later.
+- ~RNNFrame~ is not exhaustively tested for various options.
+  So, I recommend to use the standard [[https://pytorch.org/docs/1.8.0/generated/torch.nn.LSTM.html?highlight=lstm#torch.nn.LSTM][RNN]] or [[https://pytorch.org/docs/1.8.0/generated/torch.nn.LSTM.html?highlight=lstm#torch.nn.LSTM][LSTM]] first then replace it with this package later.
+- If you need only ~LSTMFrame~ rather than ~RNNFrame~, you can use the snapshot of tag v1.1 .
