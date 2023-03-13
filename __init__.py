@@ -1,2 +1,2 @@
 
-from .rnn_util import *
+from .rnnlib import *

@@ -3,7 +3,7 @@
 
 import torch
 from torch.nn import RNNCell, LSTMCell
-import rnn_util
+import rnnlib
 
 seq_len = 5
 batch_size = 3
@@ -28,7 +28,7 @@ assert len(rnn_cells) == num_layers
 assert all(len(rnn_layer_cells) == num_directions for rnn_layer_cells in rnn_cells)
 
 # with batch_first=False ------------------------------------------------
-rnn = rnn_util.RNNFrame(rnn_cells, dropout=dropout, bidirectional=bidirectional)
+rnn = rnnlib.RNNFrame(rnn_cells, dropout=dropout, bidirectional=bidirectional)
 # rnn = torch.nn.RNN(input_size, hidden_size, num_layers, bidirectional=bidirectional)
 
 input = torch.randn(seq_len, batch_size, input_size)
@@ -38,7 +38,7 @@ output, hn = rnn(input, h0)
 print(output.size())
 
 # with batch_first=True ------------------------------------------------
-rnn = rnn_util.RNNFrame(rnn_cells, dropout=dropout, bidirectional=bidirectional, batch_first=True)
+rnn = rnnlib.RNNFrame(rnn_cells, dropout=dropout, bidirectional=bidirectional, batch_first=True)
 # rnn = torch.nn.RNN(input_size, hidden_size, num_layers, bidirectional=bidirectional, batch_first=True)
 
 input = torch.randn(batch_size, seq_len, input_size)
@@ -66,7 +66,7 @@ assert len(rnn_cells) == num_layers
 assert all(len(rnn_layer_cells) == num_directions for rnn_layer_cells in rnn_cells)
 
 # with batch_first=False ------------------------------------------------
-rnn = rnn_util.LSTMFrame(rnn_cells, dropout=dropout, bidirectional=bidirectional)
+rnn = rnnlib.LSTMFrame(rnn_cells, dropout=dropout, bidirectional=bidirectional)
 # rnn = torch.nn.LSTM(input_size, hidden_size, num_layers, bidirectional=bidirectional)
 
 input = torch.randn(seq_len, batch_size, input_size)
@@ -77,7 +77,7 @@ output, (hn, cn) = rnn(input, (h0, c0))
 print(output.size())
 
 # with batch_first=True ------------------------------------------------
-rnn = rnn_util.LSTMFrame(rnn_cells, dropout=dropout, bidirectional=bidirectional, batch_first=True)
+rnn = rnnlib.LSTMFrame(rnn_cells, dropout=dropout, bidirectional=bidirectional, batch_first=True)
 # rnn = torch.nn.LSTM(input_size, hidden_size, num_layers, bidirectional=bidirectional, batch_first=True)
 
 input = torch.randn(batch_size, seq_len, input_size)
@@ -88,7 +88,7 @@ output, (hn, cn) = rnn(input, (h0, c0))
 print(output.size())
 
 # ------------------------ Examples of LayerNormLSTM ------------------------
-rnn = rnn_util.LayerNormLSTM(input_size, hidden_size, num_layers, dropout=dropout, r_dropout=r_dropout,
+rnn = rnnlib.LayerNormLSTM(input_size, hidden_size, num_layers, dropout=dropout, r_dropout=r_dropout,
                              bidirectional=bidirectional, layer_norm_enabled=True)
 # rnn = torch.nn.LSTM(input_size, hidden_size, num_layers, bidirectional=bidirectional)
 
