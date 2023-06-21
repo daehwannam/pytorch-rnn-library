@@ -17,8 +17,10 @@ def get_indicator(length_tensor, max_length=None):
     :param max_length: 
     :returns: a tensor where positions within ranges are set to 1
     """
-    lengths_size = length_tensor.size()
+    if isinstance(length_tensor, torch.Tensor):
+        length_tensor = torch.tensor(length_tensor, dtype=torch.int64)
 
+    lengths_size = length_tensor.size()
     flat_lengths = length_tensor.view(-1, 1)
 
     if not max_length:
